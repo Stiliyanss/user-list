@@ -1,15 +1,19 @@
-export default function UserListItem() {
+export default function UserListItem(props) {
     return(
          <tr>
               <td>
-                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"
-                  alt="Peter's profile" className="image" />
+                <img src={props.user.imageUrl}
+                  alt={`${props.user.firstName}'s profile`} className="image" />
               </td>
-              <td>Peter</td>
-              <td>Johnson</td>
-              <td>peter@abv.bg</td>
-              <td>0812345678</td>
-              <td>June 28, 2022</td>
+              <td>{props.user.firstName}</td>
+              <td>{props.user.lastName}</td>
+              <td>{props.user.email}</td>
+              <td>{props.user.phoneNumber}</td>
+              <td>{new Date(props.user.createdAt)
+                .toLocaleString("en-US",{
+                  year: "numeric", month:'long', day:"numeric"
+                })}
+                </td>
 
               <td className="actions">
                 <button className="btn edit-btn" title="Edit">
