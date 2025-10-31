@@ -12,6 +12,7 @@ export default function UserList() {
 
   const [users, setUsers] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const [userIdInfo, setUserIdInfo] = useState();
 
   useEffect(()=>{
@@ -48,7 +49,12 @@ export default function UserList() {
   }
 
   const userInfoClickHandler = (userId)=>{
-    setUserIdInfo(userId)    
+    setUserIdInfo(userId);
+    setShowInfo(true);
+  }
+
+  const closeUserInfoClickHandler = () =>{
+    setShowInfo(false);
   }
 
     return(
@@ -61,7 +67,11 @@ export default function UserList() {
       onSave={saveCreateUserClickHandler}
       />}
 
-     {userIdInfo && <UserInfo/>}
+     {userIdInfo && showInfo && <UserInfo 
+      onClose={closeUserInfoClickHandler}
+      userId={userIdInfo}
+
+     />}
 
       {/* <!-- Table component --> */}
       <div className="table-wrapper">
