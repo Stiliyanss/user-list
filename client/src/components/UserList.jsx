@@ -7,13 +7,16 @@ import Search from "./Search";
 import UserListItem from "./UserListItem";
 import UserCreate from "./UserCreate.jsx";
 import UserInfo from "./UserInfo.jsx";
+import UserDelete from "./UserDelete.jsx";
 
 export default function UserList() {
 
   const [users, setUsers] = useState([]);
   const [showCreate, setShowCreate] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const [userIdInfo, setUserIdInfo] = useState();
+  const [showDelete, setShowDelete] = useState(false);
+  const [userIdInfo, setUserIdInfo] = useState(null);
+  const [userIdDelete, setUserIdDelete] = useState(null)
 
   useEffect(()=>{
     userService.getAll()
@@ -57,6 +60,21 @@ export default function UserList() {
     setShowInfo(false);
   }
 
+  const userDeleteClickHandler = (userId) =>{
+      setUserIdDelete(userId);
+      setShowDelete(true)
+  }
+
+  const closeUserDeleteHandler = ()=>{
+    setShowDelete(false);
+  }
+  
+  const userDeleteHandler = async (userId)=>{
+     await userService.delete(userId);
+     setUsers(state=> state.filter(user => user._id != userId))
+     setShowDelete(false)
+  }
+
     return(
           <section className="card users-container">
 
@@ -70,8 +88,12 @@ export default function UserList() {
      {userIdInfo && showInfo && <UserInfo 
       onClose={closeUserInfoClickHandler}
       userId={userIdInfo}
-
      />}
+
+    { userIdDelete && showDelete && <UserDelete 
+    onClose={closeUserDeleteHandler}
+    onDelete={userDeleteHandler}
+    userId={userIdDelete}/>}
 
       {/* <!-- Table component --> */}
       <div className="table-wrapper">
@@ -188,7 +210,10 @@ export default function UserList() {
             </tr>
           </thead>
           <tbody>
-           {users.map(user => <UserListItem key={user._id} onInfoClick={userInfoClickHandler} user={user}/>)}
+           {users.map(user => <UserListItem key={user._id}
+            onInfoClick={userInfoClickHandler}
+            onDeleteClick={userDeleteClickHandler}
+            user={user}/>)}
           </tbody>
         </table>
       </div>

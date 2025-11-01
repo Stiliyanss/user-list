@@ -41,7 +41,7 @@ export default function UserInfo(props) {
               <p>Phone Number: <strong>{user.phoneNumber}</strong></p>
               <p>
                 Address:
-                <strong> {user.country}, {user.city}, {user.street} {user.streetNumber} </strong>
+                <strong> {user.address?.country}, {user.address?.city}, {user.address?.street} {user.address?.streetNumber} </strong>
               </p>
 
               <p>Created on: <strong>{user.createdAt && new Date(user.createdAt)
